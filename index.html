@@ -111,6 +111,7 @@
                     downloadedImage.src = data.media_url;
                     downloadLink.href = data.media_url;
                 } else {
+                    console.error('Error from backend:', data.error);
                     alert(data.error || 'Something went wrong!');
                 }
             } catch (error) {
