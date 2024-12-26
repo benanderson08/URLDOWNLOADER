@@ -90,6 +90,8 @@
             downloadedImage.src = '';
             downloadLink.href = '#';
 
+            console.log('Attempting to fetch data for URL:', postUrl);
+
             try {
                 const response = await fetch('/download', {
                     method: 'POST',
@@ -99,7 +101,10 @@
                     body: JSON.stringify({ post_url: postUrl }),
                 });
 
+                console.log('Response status:', response.status);
+
                 const data = await response.json();
+                console.log('Response data:', data);
 
                 if (response.ok) {
                     resultDiv.style.display = 'block';
@@ -109,6 +114,7 @@
                     alert(data.error || 'Something went wrong!');
                 }
             } catch (error) {
+                console.error('Error occurred:', error);
                 alert('An error occurred while processing your request.');
             }
         });
