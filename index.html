@@ -49,6 +49,18 @@
             max-width: 100%;
             border-radius: 4px;
         }
+        .result a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .result a:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -61,6 +73,7 @@
         <div class="result" id="result">
             <h3>Downloaded Image:</h3>
             <img id="downloadedImage" src="" alt="Instagram Post Image">
+            <a id="downloadLink" href="#" download="image.jpg">Download Image</a>
         </div>
     </div>
 
@@ -71,9 +84,11 @@
             const postUrl = document.getElementById('postUrl').value;
             const resultDiv = document.getElementById('result');
             const downloadedImage = document.getElementById('downloadedImage');
+            const downloadLink = document.getElementById('downloadLink');
 
             resultDiv.style.display = 'none';
             downloadedImage.src = '';
+            downloadLink.href = '#';
 
             try {
                 const response = await fetch('/download', {
@@ -89,6 +104,7 @@
                 if (response.ok) {
                     resultDiv.style.display = 'block';
                     downloadedImage.src = data.media_url;
+                    downloadLink.href = data.media_url;
                 } else {
                     alert(data.error || 'Something went wrong!');
                 }
