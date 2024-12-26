@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Post Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            margin: 50px auto;
+            padding: 20px;
+            max-width: 500px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            display: none;
+        }
+        .result img {
+            max-width: 100%;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Instagram Post Downloader</h1>
+        <form id="downloadForm">
+            <input type="text" id="postUrl" placeholder="Enter Instagram Post URL" required>
+            <button type="submit">Download</button>
+        </form>
+        <div class="result" id="result">
+            <h3>Downloaded Image:</h3>
+            <img id="downloadedImage" src="" alt="Instagram Post Image">
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('downloadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const postUrl = document.getElementById('postUrl').value;
+            const resultDiv = document.getElementById('result');
+            const downloadedImage = document.getElementById('downloadedImage');
+
+            resultDiv.style.display = 'none';
+            downloadedImage.src = '';
+
+            try {
+                const response = await fetch('/download', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ post_url: postUrl }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.style.display = 'block';
+                    downloadedImage.src = data.media_url;
+                } else {
+                    alert(data.error || 'Something went wrong!');
+                }
+            } catch (error) {
+                alert('An error occurred while processing your request.');
+            }
+        });
+    </script>
+</body>
+</html>
